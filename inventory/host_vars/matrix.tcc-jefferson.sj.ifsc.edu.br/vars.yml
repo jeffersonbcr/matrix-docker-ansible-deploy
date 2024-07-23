@@ -1,0 +1,78 @@
+---
+# O domínio principal que representa sua identidade Matrix.
+matrix_domain: tcc-jefferson.sj.ifsc.edu.br
+
+# O software do servidor Matrix a ser instalado.
+matrix_homeserver_implementation: synapse
+
+# Habilitando configuração para que o synapse suporte o cliente element-call
+matrix_synapse_configuration_extension_yaml: |
+  experimental_features:
+    msc3266_enabled: true
+
+# Habilita a instalação do servidor de registro Matrix.
+matrix_synapse_enable_registration: true
+matrix_synapse_enable_registration_without_verification: true
+
+# Uma chave secreta usada como base para gerar outras chaves secretas.
+matrix_homeserver_generic_secret_key: '4b5izGJggLUu7ITrOzAtJlCTEW47V0axxzqheV5fNWDiomJF1LqTgxKlBEZdqRAc'
+
+# Tipo de proxy reverso a ser usado.
+matrix_playbook_reverse_proxy_type: playbook-managed-traefik
+
+# Email fornecido ao Let's Encrypt ao obter certificados SSL.
+devture_traefik_config_certificatesResolvers_acme_email: 'jefferson.br@aluno.ifsc.edu.br'
+
+# Senha do superusuário Postgres.
+devture_postgres_connection_password: 'osd1azoHUE1G0gG6L17Mcbgg4TFt4Ciy1mZp4xGLVv560hl5qEYGLtLD8Pk0paF1'
+
+# Endereço IP externo do Coturn.
+
+matrix_coturn_turn_external_ip_address: 191.36.8.49
+matrix_coturn_turn_udp_min_port: 48952
+matrix_coturn_turn_udp_max_port: 49372  
+
+# Habilitar rótulos de contêiner para arquivos estáticos.
+matrix_static_files_container_labels_base_domain_enabled: true
+
+# Habilitar Prometheus.
+prometheus_enabled: true
+
+# Habilitar o node_exporter do Prometheus.
+prometheus_node_exporter_enabled: true
+
+# Habilitar o postgres_exporter do Prometheus.
+prometheus_postgres_exporter_enabled: true
+
+# Habilitar Grafana.
+grafana_enabled: true
+
+# Desabilitar acesso anônimo ao Grafana.
+grafana_anonymous_access: false
+
+# Usuário administrador padrão do Grafana.
+grafana_default_admin_user: "jeffersonbcr"
+
+# Senha do administrador padrão do Grafana.
+grafana_default_admin_password: "jeffersongrafanakey123"
+
+# Configurações adicionais do Traefik usando o arquivo traefik.yml
+devture_traefik_configuration_extension_yaml: |
+  entryPoints:
+    livekit-wss:
+      address: :7880
+    collector-gateway:
+      address: :4318
+    redis:
+      address: :6379
+
+# Configuração personalizada do Element usando seu próprio config.json
+matrix_client_element_configuration_extension_json: |
+  {
+    "default_server_config": {
+      "element_call": {
+        "url": "https://call.tcc-jefferson.sj.ifsc.edu.br",
+        "brand": "callJefferson.tcc-jefferson.sj.ifsc.edu.br"
+      }
+    }
+  }
